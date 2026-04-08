@@ -33,3 +33,7 @@ app.listen(PORT, "0.0.0.0", async () => {
   await sequelize.authenticate();
   console.log(`Server is running on 0.0.0.0:${PORT}`);
 });
+
+app.get("/health", (req, res) => {
+  res.status(200).send("OK");
+});

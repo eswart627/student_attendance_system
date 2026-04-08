@@ -6,7 +6,10 @@ import path from "path";
 export default defineConfig({
   plugins: [react(), tailwindcss()],
   server: {
-    allowedHosts: ["pet-command-trails-verse.trycloudflare.com"],
+    allowedHosts: [
+      "starsmerchant-benefit-habitat-till.trycloudflare.com",
+      "losses-begins-both-sleeve.trycloudflare.com",
+    ],
   },
   resolve: {
     alias: {

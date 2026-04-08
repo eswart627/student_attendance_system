@@ -41,7 +41,7 @@ const Session = sequelize.define(
       defaultValue: true,
     },
   },
-  { timestamps: true }
+  { tableName: "sessions", timestamps: true }
 );
 
 module.exports = Session;

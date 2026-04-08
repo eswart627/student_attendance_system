@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node server.js",
+    "test": "mocha --timeout 5000"
   },
   "keywords": [],
   "author": "",
@@ -20,9 +21,16 @@
     "ioredis": "^5.8.2",
     "jsonwebtoken": "^9.0.2",
     "mysql2": "^3.15.3",
+    "nodemon": "^3.1.11",
     "packages.json": "^0.0.1-security",
     "qrcode": "^1.5.4",
     "sequelize": "^6.37.7",
     "uuid": "^13.0.0"
+  },
+  "devDependencies": {
+    "chai": "^6.2.1",
+    "jest": "^30.2.0",
+    "mocha": "^11.7.5",
+    "supertest": "^7.1.4"
   }
 }

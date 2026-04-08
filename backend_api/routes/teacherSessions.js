@@ -110,7 +110,7 @@ router.get("/:sessionId/qr", auth(["teacher"]), async (req, res) => {
 
     const nonce = uuidv4();
     const iat = Math.floor(Date.now() / 1000);
-    const exp = iat + 5; // QR expiry 5 seconds
+    const exp = iat + 500; // QR expiry 5 seconds
     const qrPayload = { sessionId, nonce, iat, exp };
     const qrToken = jwt.sign(qrPayload, process.env.QR_JWT_SECRET);
 
@@ -118,7 +118,8 @@ router.get("/:sessionId/qr", auth(["teacher"]), async (req, res) => {
       `qr:${nonce}`,
       JSON.stringify({ sessionId, iat, exp }),
       "EX",
-      7 // 5 seconds + 2 extra seconds in redis
+      //7 // 5 seconds + 2 extra seconds in redis
+      700 //for testing purposes
     ); // Store nonce with 7 seconds expiry
 
     const qrImage = await QRCode.toDataURL(qrToken);
@@ -262,9 +263,6 @@ router.post("/:sessionId/mark", auth(["teacher"]), async (req, res) => {
     let markedStudents = [];
     let unmarkedStudents = [];
 
-    // ------------------------------------
-    // 1️⃣ PROCESS MARKED STUDENTS
-    // ------------------------------------
     if (marked.length > 0) {
       const markList = await Student.findAll({
         where: { id: marked },
@@ -288,9 +286,6 @@ router.post("/:sessionId/mark", auth(["teacher"]), async (req, res) => {
       }
     }
 
-    // ------------------------------------
-    // 2️⃣ PROCESS UNMARKED STUDENTS (DELETE)
-    // ------------------------------------
     if (unmarked.length > 0) {
       const unmarkList = await Student.findAll({
         where: { id: unmarked },
@@ -324,7 +319,7 @@ router.post("/:sessionId/mark", auth(["teacher"]), async (req, res) => {
       },
     });
   } catch (error) {
-    console.error("BULK MARK/UNMARK STUDENTS ERROR:", error);
+    console.error("MARK/UNMARK STUDENTS ERROR:", error);
     return res.status(500).json({
       success: false,
       message: "Server error updating attendance",

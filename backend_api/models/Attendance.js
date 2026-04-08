@@ -34,7 +34,7 @@ const Attendance = sequelize.define(
       defaultValue: DataTypes.NOW,
     },
   },
-  { timestamps: true }
+  { tableName: "attendances", timestamps: true }
 );
 
 module.exports = Attendance;

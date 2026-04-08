@@ -128,12 +128,12 @@ router.post("/scan", auth(["student"]), async (req, res) => {
       defaults: { markedAt: new Date(clientScannedAt) },
     });
 
-    // Add to Redis live attendance
     await redis.sadd(`liveAttendance:${sessionId}`, studentId);
+    const sessionTTL = await redis.ttl(`activeSession:${sessionId}`);
+    if (sessionTTL > 0) {
+      await redis.expire(`liveAttendance:${sessionId}`, sessionTTL);
+    }
 
-    // -------------------------------------------------
-    // ✅ SEND SESSION END TIME IN UNIX TIMESTAMP (ms)
-    // -------------------------------------------------
     const sessionEndTime =
       sessionRecord.endTime instanceof Date
         ? sessionRecord.endTime.getTime()
