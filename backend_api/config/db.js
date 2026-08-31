@@ -14,7 +14,7 @@ const sequelize = new Sequelize(
 
     dialectOptions: {
       ssl: {
-        require: true,
+        ca: fs.readFileSync(process.env.MYSQL_SSL_CA),
         rejectUnauthorized: true,
       },
     },
