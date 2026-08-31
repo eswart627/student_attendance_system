@@ -10,6 +10,11 @@ app.use(helmet());
 app.use(cors());
 app.use(express.json());
 
+console.log("Node version:", process.version);
+console.log("MySQL host:", process.env.MYSQL_HOST);
+console.log("MySQL port:", process.env.MYSQL_PORT);
+console.log("MySQL database:", process.env.MYSQL_DATABASE);
+
 // Authentication routes
 app.use("/api/auth", authRoutes);
 
@@ -19,7 +24,6 @@ app.use("/api/teacher/sessions", teacherSessionRoutes);
 
 const teacherReportRoutes = require("./routes/teacherReport");
 app.use("/api/teacher/report", teacherReportRoutes);
-
 
 // Student scan routes
 const studentScanRoutes = require("./routes/studentScan");
