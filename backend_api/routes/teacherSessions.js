@@ -1,5 +1,5 @@
 const express = require("express");
-const { auth } = require("../middleware/authMiddleware");
+const { auth } = require("../middleware/authMiddleWare");
 const {
   Course,
   Session,
@@ -86,7 +86,7 @@ router.post("/start", auth(["teacher"]), async (req, res) => {
         endTime,
       }),
       "EX",
-      duration * 60 + 20 // expire after duration + time for end session message
+      duration * 60 + 20, // expire after duration + time for end session message
     );
 
     res.json({ success: true, session });
@@ -119,7 +119,7 @@ router.get("/:sessionId/qr", auth(["teacher"]), async (req, res) => {
       JSON.stringify({ sessionId, iat, exp }),
       "EX",
       //7 // 5 seconds + 2 extra seconds in redis
-      7
+      7,
     ); // Store nonce with 7 seconds expiry
 
     const qrImage = await QRCode.toDataURL(qrToken);
@@ -341,7 +341,7 @@ router.post("/:sessionId/extend", auth(["teacher"]), async (req, res) => {
 
     // Update DB end time
     session.endTime = new Date(
-      session.endTime.getTime() + extraMinutes * 60000
+      session.endTime.getTime() + extraMinutes * 60000,
     );
     session.active = true; // ensure active
     await session.save();
@@ -363,7 +363,7 @@ router.post("/:sessionId/extend", auth(["teacher"]), async (req, res) => {
           endTime: session.endTime,
         }),
         "EX",
-        extraMinutes * 60
+        extraMinutes * 60,
       );
     }
 
