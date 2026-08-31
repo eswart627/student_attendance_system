@@ -7,3 +7,5 @@ dot_env_prod
 
 #miscellaneous
 /miscellaneous
+/config/db_prod.js
+/config/redis_prod.js

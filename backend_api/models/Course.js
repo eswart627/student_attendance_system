@@ -29,7 +29,7 @@ const Course = sequelize.define(
       },
     },
   },
-  { tableName: "courses", timestamps: true }
+  { tableName: "courses", timestamps: true },
 );
 
 module.exports = Course;

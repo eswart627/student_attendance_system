@@ -26,7 +26,7 @@ const SessionClass = sequelize.define(
       onUpdate: "CASCADE",
     },
   },
-  { tableName: "sessionclasses", timestamps: true }
+  { tableName: "sessionclasses", timestamps: true },
 );
 
 module.exports = SessionClass;

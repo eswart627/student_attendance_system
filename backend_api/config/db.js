@@ -11,11 +11,19 @@ const sequelize = new Sequelize(
     dialect: "mysql",
     logging: false,
     timezone: "+00:00",
+
+    dialectOptions: {
+      ssl: {
+        ca: process.env.MYSQL_SSL_CA,
+        rejectUnauthorized: true,
+      },
+    },
   },
 );
 
 sequelize
   .authenticate()
   .then(() => console.log("Database connected..."))
-  .catch((err) => console.log("MYSQL connection Error: " + err));
+  .catch((err) => console.error("MYSQL ERROR:", err));
+
 module.exports = sequelize;

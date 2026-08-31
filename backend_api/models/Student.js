@@ -69,7 +69,7 @@ const Student = sequelize.define(
       allowNull: true,
     },
   },
-  { tableName: "students", timestamps: true }
+  { tableName: "students", timestamps: true },
 );
 
 module.exports = Student;

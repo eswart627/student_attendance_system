@@ -26,7 +26,7 @@ const CourseStats = sequelize.define(
       defaultValue: 0,
     },
   },
-  { tableName: "coursestats", timestamps: true }
+  { tableName: "coursestats", timestamps: true },
 );
 
 module.exports = CourseStats;

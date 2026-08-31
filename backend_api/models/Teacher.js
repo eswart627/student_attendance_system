@@ -46,7 +46,7 @@ const Teacher = sequelize.define(
       allowNull: true,
     },
   },
-  { tableName: "teachers", timestamps: true }
+  { tableName: "teachers", timestamps: true },
 );
 
 module.exports = Teacher;
