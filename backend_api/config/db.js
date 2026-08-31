@@ -11,13 +11,6 @@ const sequelize = new Sequelize(
     dialect: "mysql",
     logging: false,
     timezone: "+00:00",
-
-    dialectOptions: {
-      ssl: {
-        ca: process.env.MYSQL_SSL_CA,
-        rejectUnauthorized: true,
-      },
-    },
   },
 );
 
