@@ -110,7 +110,7 @@ router.get("/:sessionId/qr", auth(["teacher"]), async (req, res) => {
 
     const nonce = uuidv4();
     const iat = Math.floor(Date.now() / 1000);
-    const exp = iat + 500; // QR expiry 5 seconds
+    const exp = iat + 5; // QR expiry 5 seconds
     const qrPayload = { sessionId, nonce, iat, exp };
     const qrToken = jwt.sign(qrPayload, process.env.QR_JWT_SECRET);
 
@@ -119,7 +119,7 @@ router.get("/:sessionId/qr", auth(["teacher"]), async (req, res) => {
       JSON.stringify({ sessionId, iat, exp }),
       "EX",
       //7 // 5 seconds + 2 extra seconds in redis
-      700 //for testing purposes
+      7
     ); // Store nonce with 7 seconds expiry
 
     const qrImage = await QRCode.toDataURL(qrToken);

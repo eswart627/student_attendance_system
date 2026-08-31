@@ -58,7 +58,7 @@ const Student = sequelize.define(
       type: DataTypes.UUID,
       allowNull: true,
       references: {
-        model: "Classes",
+        model: "classes",
         key: "id",
       },
       onUpdate: "CASCADE",

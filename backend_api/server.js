@@ -17,15 +17,16 @@ app.use("/api/auth", authRoutes);
 const teacherSessionRoutes = require("./routes/teacherSessions");
 app.use("/api/teacher/sessions", teacherSessionRoutes);
 
+const teacherReportRoutes = require("./routes/teacherReport");
+app.use("/api/teacher/report", teacherReportRoutes);
+
+
 // Student scan routes
 const studentScanRoutes = require("./routes/studentScan");
 app.use("/api/student", studentScanRoutes);
 
 // reporting api
 app.use("/api/report", require("./routes/report"));
-
-const teacherReportRoutes = require("./routes/teacherReport");
-app.use("/api/teacher/report", teacherReportRoutes);
 
 const PORT = process.env.PORT || 3000;
 

@@ -14,9 +14,7 @@ const {
 
 const router = express.Router();
 
-// ===============================
 // GET /api/teacher/report
-// ===============================
 router.get("/", auth(["teacher"]), async (req, res) => {
   try {
     const teacherId = req.user.id;

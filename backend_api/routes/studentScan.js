@@ -8,9 +8,9 @@ require("dotenv").config();
 const router = express.Router();
 
 // Time limits for scan validation
-const CLOCK_SKEW_MS = 500 * 1000; // 500 seconds backward time drift allowed
-const LATE_WINDOW_MS = 500 * 1000; // 500 sec late scan allowance
-const MAX_DELAY_MS = 500 * 1000; // 500 sec network delay allowed
+const CLOCK_SKEW_MS = 5 * 1000; // 500 seconds backward time drift allowed
+const LATE_WINDOW_MS = 5 * 1000; // 500 sec late scan allowance
+const MAX_DELAY_MS = 5 * 1000; // 500 sec network delay allowed
 
 // POST /api/student/scan
 router.post("/scan", auth(["student"]), async (req, res) => {
