@@ -3,7 +3,7 @@ node_modules/
 
 # env folder
 .env
-dot_env_prod
+.env.production
 
 #miscellaneous
 /miscellaneous
