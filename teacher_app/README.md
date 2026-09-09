@@ -1,16 +1,41 @@
-# React + Vite
+# Student Attendance System — Teacher Web App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern web application built with React 19, Vite 7, and Tailwind CSS v4 for instructors at IIIT Pune to manage real-time attendance sessions, broadcast rotating QR codes, and monitor attendance analytics.
 
-Currently, two official plugins are available:
+## Quickstart: How to Initialize & Run
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+### 1. Prerequisites
+- **Node.js**: `>= 18.x` (Tested on `v22.x` / `v24.x`)
+- **npm**: `>= 9.x`
 
-## React Compiler
+### 2. Install Dependencies
+```bash
+cd teacher_app
+npm install
+```
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### 3. Backend API Connection
+The app connects to the API via `src/lib/axios.js`.
+- By default, it points to the deployed Render backend:
+  `https://student-attendance-system-kr95.onrender.com/api`
+- To run against a local backend, edit `src/lib/axios.js` and set:
+  `baseURL: "http://localhost:3000/api"`
 
-## Expanding the ESLint configuration
+### 4. Start Development Server
+```bash
+npm run dev
+```
+Open your browser at `http://localhost:5173`.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+### 5. Production Build
+```bash
+npm run build
+npm run preview
+```
+
+---
+
+## 📖 Complete Documentation
+For detailed architecture, state management & server time synchronization, routing guards, complete component breakdown, and screen workflows, please see:
+
+👉 **[Complete Teacher Web App Documentation](documentation.md)**
