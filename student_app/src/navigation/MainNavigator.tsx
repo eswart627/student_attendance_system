@@ -60,7 +60,7 @@ export default function MainNavigator({ token, user, onLogout }: Props) {
 
       <Stack.Screen name="Settings">
         {navigationProps => (
-          <SettingsScreen {...navigationProps} onLogout={onLogout} />
+          <SettingsScreen {...navigationProps} user={user} onLogout={onLogout} />
         )}
       </Stack.Screen>
     </Stack.Navigator>

@@ -14,10 +14,11 @@ import AppInput from '../components/AppInput';
 import { login } from '../services/authService';
 
 import type { StudentUser } from '../services/authService';
+import { setServerTime } from '../services/timeSync';
 
 // type User = {
 //   id: string | number;
-//   firstName?: string;
+//   firstName?: string
 //   lastName?: string;
 //   email: string;
 //   MIS?: string;
@@ -57,6 +58,11 @@ export default function LoginScreen({ onLogin }: Props) {
       if (!response.success || !response.data?.token || !response.data.user) {
         throw new Error(response.message || 'Login failed.');
       }
+
+      if (response.serverTime) {
+        setServerTime(response.serverTime);
+      }
+
 
       await onLogin(response.data.token, response.data.user);
     } catch (error: any) {

@@ -1,12 +1,15 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import {
   ActivityIndicator,
+  AppState,
+  AppStateStatus,
   SafeAreaView,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
 } from 'react-native';
+import { useIsFocused } from '@react-navigation/native';
 
 import {
   Camera,
@@ -21,6 +24,7 @@ import colors from '../styles/colors';
 import spacing from '../styles/spacing';
 import typography from '../styles/typography';
 import theme from '../styles/theme';
+import { getSyncedTimestamp } from '../services/timeSync';
 
 type Props = {
   navigation: any;
@@ -29,18 +33,35 @@ type Props = {
 
 type ScanStatus = 'idle' | 'scanning' | 'success' | 'error';
 
+const BARCODE_FORMATS: ('qr-code')[] = ['qr-code'];
+
 export default function ScanScreen({ navigation, token }: Props) {
+  const isFocused = useIsFocused();
+  const [appState, setAppState] = useState<AppStateStatus>(
+    (AppState.currentState as AppStateStatus) || 'active',
+  );
+
   const device = useCameraDevice('back');
 
   const { hasPermission, requestPermission } = useCameraPermission();
 
   const [cameraError, setCameraError] = useState<string | null>(null);
 
-  const [scannedValue, setScannedValue] = useState<string | null>(null);
+  const [_scannedValue, setScannedValue] = useState<string | null>(null);
 
   const [scanStatus, setScanStatus] = useState<ScanStatus>('idle');
 
   const [statusMessage, setStatusMessage] = useState<string | null>(null);
+
+  useEffect(() => {
+    const subscription = AppState.addEventListener('change', nextState => {
+      setAppState(nextState);
+    });
+
+    return () => {
+      subscription.remove();
+    };
+  }, []);
 
   /*
    * Prevents multiple requests while the current
@@ -247,7 +268,7 @@ export default function ScanScreen({ navigation, token }: Props) {
        */
       isSubmitting.current = true;
 
-      const scannedAt = Date.now();
+      const scannedAt = getSyncedTimestamp();
 
       setScannedValue(qrToken);
       setScanStatus('scanning');
@@ -348,7 +369,7 @@ export default function ScanScreen({ navigation, token }: Props) {
      ============================================================ */
 
   const barcodeOutput = useBarcodeScannerOutput({
-    barcodeFormats: ['qr-code'],
+    barcodeFormats: BARCODE_FORMATS,
 
     onBarcodeScanned: handleBarcodeScanned,
 
@@ -362,6 +383,11 @@ export default function ScanScreen({ navigation, token }: Props) {
       setCameraError(error?.message || 'Unable to use the QR scanner.');
     },
   });
+
+  const cameraOutputs = useMemo(() => [barcodeOutput], [barcodeOutput]);
+
+  const isCameraActive =
+    isFocused && appState === 'active' && scanStatus !== 'success';
 
   /* ============================================================
      PERMISSION SCREEN
@@ -434,14 +460,8 @@ export default function ScanScreen({ navigation, token }: Props) {
       <Camera
         style={StyleSheet.absoluteFill}
         device={device}
-        /*
-         * The camera itself can remain active.
-         *
-         * attendanceMarked.current prevents all barcode
-         * callbacks after success.
-         */
-        isActive={true}
-        outputs={[barcodeOutput]}
+        isActive={isCameraActive}
+        outputs={cameraOutputs}
         enableNativeZoomGesture={true}
         onError={error => {
           setCameraError(error?.message || 'Unable to use the camera.');
@@ -532,8 +552,8 @@ export default function ScanScreen({ navigation, token }: Props) {
                 {scanStatus === 'success'
                   ? 'Attendance marked'
                   : scanStatus === 'error'
-                  ? 'Attendance not marked'
-                  : 'Verifying attendance'}
+                    ? 'Attendance not marked'
+                    : 'Verifying attendance'}
               </Text>
 
               <Text style={styles.statusMessage}>{statusMessage}</Text>

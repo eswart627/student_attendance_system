@@ -1,13 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import {
   ActivityIndicator,
   Alert,
+  RefreshControl,
   ScrollView,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
 } from 'react-native';
+import { useFocusEffect } from '@react-navigation/native';
 
 import {
   getStudentAttendance,
@@ -53,15 +55,10 @@ export default function DashboardScreen({
 }: Props) {
   const [attendance, setAttendance] = useState<StudentAttendance[]>([]);
   const [loadingAttendance, setLoadingAttendance] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
 
-  useEffect(() => {
-    loadAttendance();
-  }, []);
-
-  const loadAttendance = async () => {
+  const loadAttendance = useCallback(async () => {
     try {
-      setLoadingAttendance(true);
-
       const response = await getStudentAttendance(token, user.id);
 
       if (!response.success) {
@@ -78,7 +75,19 @@ export default function DashboardScreen({
       );
     } finally {
       setLoadingAttendance(false);
+      setRefreshing(false);
     }
+  }, [token, user.id]);
+
+  useFocusEffect(
+    useCallback(() => {
+      loadAttendance();
+    }, [loadAttendance]),
+  );
+
+  const handleRefresh = () => {
+    setRefreshing(true);
+    loadAttendance();
   };
 
   const totalPresent = attendance.reduce(
@@ -121,6 +130,14 @@ export default function DashboardScreen({
       <ScrollView
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.scrollContent}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={handleRefresh}
+            tintColor="#4F46E5"
+            colors={['#4F46E5']}
+          />
+        }
       >
         {/* Header */}
         <View style={styles.headerBackground}>
